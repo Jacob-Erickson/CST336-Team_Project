@@ -2,6 +2,8 @@
 
     //Put session handling here
     
+    $holder = array("hello", "goodbye", "hola", "adios");
+    
     //Put database handling here
 
 ?>
@@ -21,9 +23,35 @@
         
         <main>
             
+            <?php
+            
+                if(!empty($_GET))//begining of if statement, allows form to be hidden when showing further info
+                {
+            
+            ?>
             <div id="criteria">
                 <!-- Put the form and search criteria here -->
             </div>
+            
+            <?php
+            
+                }//end of if statement
+                else if(isset($_GET['further_info_about']))//beginning of else if statement, shows further info when button clicked
+                {
+            
+            ?>
+            
+            <div id="further">
+                
+            </div>
+            
+            <?php
+            
+                }//end if else if
+                else//beginning of else statement, shows the results
+                {
+                    
+            ?>
             
             <div id="results">
                 
@@ -34,6 +62,12 @@
                 ?>
                 
             </div>
+            
+            <?php
+            
+                }//end of else statement
+            
+            ?>
             
         </main>
         
