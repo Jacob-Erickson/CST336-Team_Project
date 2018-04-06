@@ -2,16 +2,45 @@
 
     //Put session handling here
     
-    $holder = array("hello", "goodbye", "hola", "adios");
     
     //Put database handling here
-    include '../rbradley/dbConnection.php';
+    $vacation_master_db = getDatabaseConnection("vacationMaster");
     
-    $conn = getDatabaseConnection('vacationMaster');
-    
-    function displayCategories(){
-        global $conn;
+    function getDatabaseConnection($dbName) 
+    {
+        //checks whether the URL contains "herokuapp" (using Heroku)
+        if(strpos($_SERVER['HTTP_HOST'], 'herokuapp') !== false) {
+           $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+           $host = $url["host"];
+           $dbname = substr($url["path"], 1);
+           $username = $url["user"];
+           $password = $url["pass"];
+        }
+        else
+        {
+            $host = "localhost";
+            $username = "web_user";
+            $password = "s3cr3t";
+        }
         
+        $dbConn = new PDO("mysql:host=$host;dbname=$dbName", $username, $password);
+        $dbConn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        return $dbConn;
+    
+    }
+    
+    function getCodeResults($code, $database)
+    {
+        $result = $database->prepare($code);
+        $result->execute();
+        $result = $result->fetchAll(PDO::FETCH_ASSOC);
+        
+        return($result);
+    }
+    
+    function displayCategories($conn)
+    {
         $sql = "SELECT * FROM `category`";
         
         $stmt = $conn->prepare($sql);
@@ -27,7 +56,16 @@
         }
         
     }
-
+    
+    $everything = "SELECT * 
+                FROM event 
+                NATURAL JOIN package  
+                NATURAL JOIN activity 
+                NATURAL JOIN lodge
+                NATURAL JOIN category;";
+                
+    $everything = getCodeResults($vacation_master_db, $everything);
+    
 ?>
 <!DOCTYPE html>
 <html>
@@ -60,7 +98,7 @@
                 <h4>Filter activities available:</h4>
                 <select name = "activity">
                     <option value="">Select</option>
-                    <?= displayCategories() ?>
+                    <?= displayCategories($vacation_master_db) ?>
                 </select>
                 </br></br>    
                 <h4>Filter by price:</h4>
@@ -86,11 +124,98 @@
             
             <div id="further">
                 
+                <?php
+                
+                    foreach ($everything as $value)
+                    {
+                        if($_GET['further_info_about'] == $value['event_id'])
+                        {
+                            echo "<h1>";
+                            echo $value['package_name'];
+                            echo " (";
+                            echo $value['event_subname'];
+                            echo ")";
+                            echo "</h1>";
+                            
+                            echo "<hr />";
+                            
+                            echo "<div id='item info'>";
+                            
+                            echo "<h2>";
+                            echo $value['activity_name'];
+                            echo "</h2>";
+                            
+                            echo "<h3>";
+                            echo "Activity: ";
+                            echo $value['category_name'];
+                            echo "</h3>";
+                            
+                            echo "<p>";
+                            echo $value['activity_description'];
+                            
+                            echo "<img style='max-width: 20%;' src='";
+                            echo $value['activity_image'];
+                            echo "' />";
+                            
+                            echo "</p>";
+                            
+                            echo "<p>";
+                            echo "<strong>";
+                            echo "Location: ";
+                            echo "</strong>";
+                            echo $value['activity_location'];
+                            echo "</p>";
+                            
+                            echo "<p>";
+                            echo "<strong>";
+                            echo "Minimum number of people: ";
+                            echo "</strong>";
+                            echo $value['package_minimum'];
+                            echo "</p>";
+                            
+                            echo "<p>";
+                            echo "<strong>";
+                            echo "Maximum number of people: ";
+                            echo "</strong>";
+                            echo $value['package_maximum'];
+                            echo "</p>";
+                            
+                            echo "</div>";
+                            
+                            echo "<hr />";
+                            
+                            echo "<div id='lodge info'>";
+                            
+                            echo "<h2>";
+                            echo "Lodging: ";
+                            echo $value['lodge_name'];
+                            echo "</h2>";
+                            
+                            echo "<p>";
+                            echo $value['lodge_description'];
+                            
+                            echo "<img style='max-width: 20%;' src='";
+                            echo $value['lodge_image'];
+                            echo "' />";
+                            
+                            echo "</p>";
+                            
+                            echo "<strong>";
+                            echo "Location; ";
+                            echo "</strong>";
+                            echo $value['lodge_address'];
+                            
+                            echo "</div>";
+                        }
+                    }
+                
+                ?>
+                
             </div>
             
             <?php
             
-                }//end if else if
+                }//end of else if
                 else//beginning of else statement, shows the results
                 {
                     
@@ -101,6 +226,16 @@
                 <?php
                 
                     //loop through to show the results here
+                    foreach ($everything as $value)
+                    {
+                        echo "<form method='get'>";
+                        echo "<button name='further_info_about' value=";
+                        echo $value['event_id'];
+                        echo ">";
+                        echo "Get more info";
+                        echo "</button>";
+                        echo "</form>";
+                    }
                 
                 ?>
                 
