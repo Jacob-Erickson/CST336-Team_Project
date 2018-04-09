@@ -1,6 +1,8 @@
 <?php
 
     //Put session handling here
+    session_start();
+    
     if(!isset($_SESSION['shoppingCart'])){
         $_SESSION['shoppingCart'] = array();
     }
@@ -237,10 +239,9 @@
                 </form> 
                 
                 <?php
-                    foreach($_SESSION['shoppingCart'] as $value){
-                        echo $value;
-                        echo "<br>";
-                    }
+                
+                    print_r($_SESSION['shoppingCart']);
+                
                     //loop through to show the results here
                     foreach ($everything as $value)
                     {
