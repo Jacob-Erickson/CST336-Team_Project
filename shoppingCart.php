@@ -9,6 +9,14 @@ foreach($_SESSION["shoppingCart"] as $cartItems){
     $package_endDate = $cartItems["event_end_date"];
     $package_lodgeImg = $cartItems["lodge_image"];
     
+    echo $packageName;
+    echo $package_description;
+    echo $package_lodgeName;
+    echo $package_lodgeDesc;
+    echo $package_startDate;
+    echo $package_endDate;
+    echo $package_lodgeImg;
+    
 }
 
 ?>
