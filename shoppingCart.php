@@ -15,7 +15,9 @@ foreach($_SESSION["shoppingCart"] as $cartItems){
     echo $package_lodgeDesc;
     echo $package_startDate;
     echo $package_endDate;
-    echo $package_lodgeImg;
+    echo "<img src='" . $package_lodgeImg . "'>";
+    
+    
     
 }
 

@@ -1,6 +1,9 @@
 <?php
 
     //Put session handling here
+    if(!isset($_SESSION['shoppingCart'])){
+        $_SESSION['shoppingCart'] = array();
+    }
     
     
     //Put database handling here
@@ -64,7 +67,12 @@
                 NATURAL JOIN lodge
                 NATURAL JOIN category;";
                 
-    $everything = getCodeResults($vacation_master_db, $everything);
+    $everything = getCodeResults($everything, $vacation_master_db);
+    
+    if(isset($_GET['add']))
+    {
+        array_push($_SESSION['shoppingCart'], $_GET['add']);
+    }
     
 ?>
 <!DOCTYPE html>
@@ -223,8 +231,16 @@
             
             <div id="results">
                 
-                <?php
+                <form>
+                    <input type='hidden' name='add' value='2'/>
+                    <input type='submit' value = 'submit'/>
+                </form> 
                 
+                <?php
+                    foreach($_SESSION['shoppingCart'] as $value){
+                        echo $value;
+                        echo "<br>";
+                    }
                     //loop through to show the results here
                     foreach ($everything as $value)
                     {
