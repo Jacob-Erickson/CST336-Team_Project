@@ -127,6 +127,16 @@
             <?php
             
                 }//end of if statement
+                else if(isset($_GET['view_cart']))
+                {
+            ?>
+            
+            <div id='cart'>
+                
+            </div>
+            
+            <?php
+                }//end of else if, shows cart contents
                 else if(isset($_GET['further_info_about']))//beginning of else if statement, shows further info when button clicked
                 {
             
