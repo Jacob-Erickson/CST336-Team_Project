@@ -11,6 +11,7 @@
             $package_startDate = $cartItems["event_start_date"];
             $package_endDate = $cartItems["event_end_date"];
             $package_lodgeImg = $cartItems["lodge_image"];
+            //$package_price = $cartItems['package_price']  <- not sure what its going to be called
             
             echo $packageName;
             echo $package_description;

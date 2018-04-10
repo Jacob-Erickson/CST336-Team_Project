@@ -8,6 +8,11 @@
         $_SESSION['shoppingCart'] = array();
     }
     
+    //emptys shopping cart
+    if(isset($_GET['empty_cart'])){
+        $_SESSION['shoppingCart'] = array();
+    }
+    
     
     //Put database handling here
     $vacation_master_db = getDatabaseConnection("vacationMaster");
@@ -160,7 +165,12 @@
             
             <div id='cart'>
                 
+                <!--<form>-->
+                <!--    <input type ='hidden' value = 'true' name = 'empty_cart'/>-->
+                <!--    <input type = 'submit' value = 'empty the cart'/>-->
+                <!--</form>-->
                 <?php
+                
                 
                     foreach ($_SESSION['shoppingCart'] as $item)
                     {
@@ -175,6 +185,11 @@
                     }
                 
                 ?>
+                
+                <form>
+                    <input type ='hidden' value = 'true' name = 'empty_cart'/>
+                    <input type = 'submit' value = 'empty the cart'/>
+                </form>
                 
             </div>
             
