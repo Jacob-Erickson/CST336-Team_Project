@@ -2,6 +2,7 @@
 
     //Put session handling here
     session_start();
+    include "shoppingCart.php";
     
     if(!isset($_SESSION['shoppingCart'])){
         $_SESSION['shoppingCart'] = array();
@@ -158,7 +159,23 @@
             ?>
             
             <div id='cart'>
-                Hello Buddy!!!
+                
+                <?php
+                
+                    foreach ($_SESSION['shoppingCart'] as $item)
+                    {
+                        foreach ($everything as $value)
+                        {
+                            if($item == $value['package_id'])
+                            {
+                                echo $value['package_name'];
+                                echo "<br />";
+                            }
+                        }
+                    }
+                
+                ?>
+                
             </div>
             
             <?php
@@ -181,6 +198,12 @@
                             echo " (";
                             echo $value['event_subname'];
                             echo ")";
+                            echo "<form>";
+                            echo "<input type='hidden' name='add' value='";
+                            echo $_GET['further_info_about'];
+                            echo "' />";
+                            echo "<input type='submit' value='Add to cart' />";
+                            echo "</form>";
                             echo "</h1>";
                             
                             echo "<hr />";
@@ -279,7 +302,7 @@
                     print_r($_SESSION['shoppingCart']);
                 
                     //loop through to show the results here
-                    foreach ($everything as $value)
+                    foreach ($everything as $value)//this loop is a place holder
                     {
                         echo "<form method='get'>";
                         echo "<button name='further_info_about' value=";
