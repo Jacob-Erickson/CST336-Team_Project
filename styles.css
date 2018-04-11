@@ -10,6 +10,7 @@ body
  font-size: 20px;
  background-image: url("back.jpg");
  background-repeat: repeat-x;
+
 }
 
 .btn-success{
@@ -36,6 +37,13 @@ body
     text-shadow: 2px 2px black;
     font-family: Comic Sans MS;
 }
+
+#greet
+{
+    color:green;
+    text-shadow: 1px 1px black;
+}
+
 .button 
 {
    background-color: #4CAF50; /* Green */
@@ -50,7 +58,7 @@ body
     border-top-left-radius: 20px;
 }
 
-.info_page,p
+.info_page
 {
     color: #A425F7;
 }
