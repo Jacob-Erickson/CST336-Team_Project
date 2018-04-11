@@ -1,9 +1,8 @@
 <?php
 
-    function addend(&$code)
+    function addend(&$code, $check)
     {
-        $compare = substr($code, (strlen($code) - 5), strlen($code));
-        if($compare != "ERE ")
+        if($check)
         {
             $code .= " AND ";
         }
@@ -17,10 +16,11 @@
             
             $all = true;
             
+            $check = false;
+            
             if(isset($_GET['minDays']) && $_GET['minDays'] != "")
             {
                 $all = false;
-                addend($sql);
                 $sql .= "event_end_date - event_start_date ";
                 if(isset($_GET['maxDays']) && $_GET['maxDays'] != "")
                 {
@@ -33,18 +33,19 @@
                 {
                     $sql .= ">= " . $_GET['minDays'];
                 }
+                $check = true;
             }
             else if(isset($_GET['maxDays']) && $_GET['maxDays'] != "")
             {
                 $all = false;
-                addend($sql);
                 $sql .= "event_end_date - event_start_date <= " . $_GET['maxDays'];
+                $check = true;
             }
             
             if(isset($_GET['minPrice']) && $_GET['minPrice'] != "")
             {
                 $all = false;
-                addend($sql);
+                addend($sql, $check);
                 $sql .= "price_per_person ";
                 if(!empty($_GET['maxPrice']))
                 {
@@ -57,18 +58,20 @@
                 {
                     $sql .= ">= " . $_GET['minPrice'];
                 }
+                $check = true;
             }
             else if(isset($_GET['maxPrice']) && $_GET['maxPrice'] != "")
             {
                 $all = false;
-                addend($sql);
+                addend($sql, $check);
                 $sql .= "price_per_person <= " . $_GET['maxPrice'];
+                $check = true;
             }
             
             if(isset($_GET['activity']) && $_GET['activity'] != "")
             {
                 $all = false;
-                addend($sql);
+                addend($sql, $check);
                 $sql .= "category_name LIKE \"%" . str_replace("+", " ", $_GET['activity']) . "%\"";
             }
             
