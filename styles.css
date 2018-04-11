@@ -64,3 +64,13 @@ text-shadow: 1px 1px black;
 {
     color: #A425F7;
 }
+
+table
+{
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 4px solid black;
+    background-color: white;
+}
