@@ -15,9 +15,36 @@
             {
                 if($item == $event['event_id'])
                 {
+                    
+                    $dollars = "$";
                     //echo the event information here in place of the foreach loop below
                     echo "<td>";
                     echo $event['package_name'];
+                    echo "</td>";
+                    
+                    echo "<td>";
+                    echo $event['package_description'];
+                    echo "</td>";
+                    
+                    echo "<td>";
+                    echo $event['lodge_name'];
+                    echo "</td>";
+                    
+                    echo "<td>";
+                    echo $event['lodge_description'];
+                    echo "</td>";
+                    
+                    echo "<td>";
+                    echo $event['event_start_date'];
+                    echo "</td>";
+                    
+                    echo "<td>";
+                    echo $event['event_end_date'];
+                    echo "</td>";
+                    
+                    echo "<td>";
+                    echo $dollars;
+                    echo $event['price_per_person'];
                     echo "</td>";
                     
                     /*
