@@ -215,7 +215,8 @@
                     foreach ($everything as $value)
                     {
                         if($_GET['further_info_about'] == $value['event_id'])
-                        {
+                        {   echo "<div class = 'container'>
+                <div class = 'panel panel-default'>";
                             echo "<h1>";
                             echo $value['package_name'];
                             echo " (";
@@ -296,11 +297,13 @@
                             echo "Location; ";
                             echo "</strong>";
                             echo $value['lodge_address'];
-                            
+                            echo "</div></div>";
                             echo "</div>";
+                            
                         }
+                       
                     }
-                
+                   
                 ?>
                 
             </div>
