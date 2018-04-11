@@ -3,7 +3,7 @@
     //Put session handling here
     session_start();
     include "shoppingCart.php";
-    
+    include "functions.php";
     if(!isset($_SESSION['shoppingCart'])){
         $_SESSION['shoppingCart'] = array();
     }
@@ -144,15 +144,15 @@
                 </select>
                 </br></br>    
                 <h4>Filter by price:</h4>
-                 Mininmum:<input type = "number" min = "100" max = "10000" name = "minDays"/> Maximum: <input type ="number" min = "100" max = "10000" name ="maxDays"/>
+                 Mininmum:<input type = "number" min = "100" max = "10000" name = "minPrice"/> Maximum: <input type ="number" min = "100" max = "10000" name ="maxPrice"/>
                  </br></br>
                  <h4> Sort by: </h4>
-                Price: <input type = "radio" name = "Price" value = "Price"> 
-                Date: <input type = "radio" name = "Date" value = "Date">
+                Price: <input type = "radio" name = "sort" value = "Price"> 
+                Date: <input type = "radio" name = "sort" value = "Date">
                 </br>
                 <h4>Generate your results:</h4>
                  
-                <input type="submit" id= "button" value="Results"/>
+                <input type="submit" name="submit" id= "button" value="Results"/>
         </form>
             </div>
             
@@ -313,7 +313,7 @@
                 </form> 
                 
                 <?php
-                
+                    displayResults();
                     print_r($_SESSION['shoppingCart']);
                 
                     //loop through to show the results here
