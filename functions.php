@@ -97,8 +97,6 @@
                 $sql .= ";";
             }
             
-            echo $sql;
-            
             $execute = true;
             if(($_GET['minDays'] > $_GET['maxDays']) && ($_GET['minDays'] != "") && ($_GET['maxDays'] != ""))
             {
@@ -117,6 +115,9 @@
                 $stmt = $vacation_master_db->prepare($sql);
                 $stmt->execute($namedParameters);
                 $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                echo "<h1>";
+                echo "Here are your results: ";
+                echo "</h1>";
                 echo "<table>";
                 
                 

@@ -23,6 +23,8 @@ text-shadow: 1px 1px black;
 }
 
 .btn-xlarge {
+    position: relative;
+    top: -20px;
     padding: 18px 28px;
     font-size: 22px; 
     line-height: normal;
