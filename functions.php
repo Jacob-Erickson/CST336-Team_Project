@@ -1,49 +1,75 @@
 <?php
+
+    function addend(&$code)
+    {
+        $compare = substr($code, (strlen($code) - 5), strlen($code));
+        if($compare != "ERE ")
+        {
+            $code .= " AND ";
+        }
+    }
     
     function displayResults() {
     
     global $vacation_master_db;
     
-    //checks if user submits the form(clicks search)
-       if (isset($_GET['submit'])) { //checks whether user has submitted the form
-            echo "<h3>Vacations Found: </h3>"; 
+            $sql = "SELECT * FROM event NATURAL JOIN package NATURAL JOIN activity NATURAL JOIN lodge NATURAL JOIN category WHERE ";
             
-            //following sql works but it DOES NOT prevent SQL Injection
-            //$sql = "SELECT * FROM om_product WHERE 1
-            //       AND productName LIKE '%".$_GET['product']."%'";
+            $all = true;
             
-            //Query below prevents SQL Injection
-            
-            $namedParameters = array();
-            
-            $sql = "SELECT * FROM event NATURAL JOIN package NATURAL JOIN activity NATURAL JOIN lodge NATURAL JOIN category WHERE 1 ";
-            
-            if($_GET['minDays'] > $_GET['maxDays']) {
-                echo "<h4> Select a minumum day that is smaller than the maximum day</h4>";
+            if(isset($_GET['minDays']) && $_GET['minDays'] != "")
+            {
+                $all = false;
+                $sql .= "event_end_date - event_start_date ";
+                if(isset($_GET['maxDays']) && $_GET['maxDays'] != "")
+                {
+                    $sql .= "BETWEEN ";
+                    $sql .= $_GET['minDays'];
+                    $sql .= " AND ";
+                    $sql .= $_GET['maxDays'];
+                }
+                else
+                {
+                    $sql .= ">= " . $_GET['minDays'];
+                }
             }
-            if($_GET['minPrice'] > $_GET['maxPrice']) {
-                echo "<h4> Select a minumum price that is smaller than the maximum price</h4>";
-            }
-            
-            if(!empty($_GET['minDays']) && !empty($_GET['maxDays']) ) {
-                $sql .= " AND event_end_date - event_start_date BETWEEN :minDays AND :maxDays";
-                $namedParameters[":minDays"] = $_GET['minDays'];
-                $namedParameters[":maxDays"] = $_GET['maxDays'];
-                
-            }
-            
-            if(!empty($_GET['minPrice'])) {
-                $sql.= " AND price_per_person <= :minPrice ";
-                $namedParameters[":minPrice"] = $_GET["minPrice"];
-                
+            else if(isset($_GET['maxDays']) && $_GET['maxDays'] != "")
+            {
+                $all = false;
+                addend($sql);
+                $sql .= "event_end_date - event_start_date <= " . $_GET['maxDays'];
             }
             
-            if(!empty($_GET['maxPrice'])){
-                $sql .= " AND price_per_person >= :maxPrice ";
-                $namedParameters[":maxPrice"] = $_GET['maxPrice'];
-                
+            if(isset($_GET['minPrice']))
+            {
+                $all = false;
+                addend($sql);
+                $sql .= "price_per_person ";
+                if(!empty($_GET['maxPrice']))
+                {
+                    $sql .= "BETWEEN ";
+                    $sql .= $_GET['minPrice'];
+                    $sql .= " AND ";
+                    $sql .= $_GET['maxPrice'];
+                }
+                else
+                {
+                    $sql .= ">= " . $_GET['minPrice'];
+                }
             }
-        
+            else if(isset($_GET['maxPrice']))
+            {
+                $all = false;
+                addend($sql);
+                $sql .= "price_per_person <= " . $_GET['maxPrice'];
+            }
+            
+            if(isset($_GET['activity']) && $_GET['activity'] != "")
+            {
+                $all = false;
+                addend($sql);
+                $sql .= "category_name LIKE \"%" . str_replace("+", " ", $_GET['activity']) . "%\"";
+            }
             
             if(isset($_GET['sort'])) {
                 
@@ -58,38 +84,54 @@
                 }
             }
             
-            
-             $stmt = $vacation_master_db->prepare($sql);
-             $stmt->execute($namedParameters);
-             $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo "<table>
-                  <tr>
-                  <th>Event Start Date</th>
-                  <th>Event End Date</th>
-                  <th>Price Per Person</th>
-                  <th>Activity Name</th>
-                  <th>Activity Description</th>
-                  <th>Lodge Name</th>
-                  <th>Lodge Description</th>
-                  <th>Package Name</th>
-                  <th>Package Description</th>
-                  </tr>";
-            foreach ($records as $record) {
-            
-                echo "<tr>
-                  <td>".$record["event_start_date"]."</td>
-                  <td>".$record["event_end_date"]."</td>
-                  <td>".$record["price_per_person"]."</td>
-                  <td>".$record["activity_name"]."</td>
-                  <td>".$record["activity_description"]."</td>
-                  <td>".$record["lodge_name"]."</td>
-                  <td>".$record["lodge_description"]."</td>
-                  <td>".$record["package_name"]."</td>
-                  <td>".$record["package_description"]."</td>
-                  </tr> ";
+            if($all)
+            {
+                $sql .= "1;";
             }
-            echo "</table>";
-        }
-        
-}
+            else
+            {
+                $sql .= ";";
+            }
+            
+            $execute = true;
+            if(($_GET['minDays'] > $_GET['maxDays']) && ($_GET['minDays'] != "") && ($_GET['maxDays'] != ""))
+            {
+                echo "<h4> Select a minumum day that is smaller than the maximum day</h4>";
+                $execute = false;
+            }
+                
+            if(($_GET['minPrice'] > $_GET['maxPrice']) && ($_GET['minPrice'] != "") && ($_GET['maxPrice'] != ""))
+            {
+                echo "<h4> Select a minumum price that is smaller than the maximum price</h4>";
+                $execute = false;
+            }
+            
+            if($execute)
+            {
+                $stmt = $vacation_master_db->prepare($sql);
+                $stmt->execute($namedParameters);
+                $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                echo "<table>";
+                
+                foreach ($records as $record)
+                {
+                    echo "<tr>
+                    <td>Starts:<br />".$record["event_start_date"]."</td>
+                    <td>Ends:<br />".$record["event_end_date"]."</td>
+                    <td>$".$record["price_per_person"]."</td>
+                    <td>".$record["activity_name"]."<br />(" . $record['event_subname'].")</td>
+                    <td>".$record["activity_description"]."</td>
+                    <td>".$record["package_name"]."</td>
+                    <td>".$record["package_description"]."</td>
+                    <td>
+                    <form>
+                    <input type='hidden' name='add' value='".$record['event_id']."'/>
+                    <input type='submit' class='btn btn-success btn-xlarge' value = 'Add to cart'/>
+                    </form>
+                    </td>
+                    </tr> ";
+                }
+                echo "</table>";
+            }
+       }
 ?>

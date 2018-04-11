@@ -3,6 +3,7 @@
     //Put session handling here
     session_start();
     include "shoppingCart.php";
+    include "functions.php";
     
     if(!isset($_SESSION['shoppingCart'])){
         $_SESSION['shoppingCart'] = array();
@@ -157,7 +158,7 @@
                     <div class ="panel panel-primary">
                         <div class="panel-heading"><h4>Filter by price:</h4></div>
                     </div>
-                         Mininmum:<input type = "number" min = "100" max = "10000" name = "minDays"/> Maximum: <input type ="number" min = "100" max = "10000" name ="maxDays"/>
+                         Mininmum:<input type = "number" min = "100" max = "10000" name = "minPrice"/> Maximum: <input type ="number" min = "100" max = "10000" name ="maxPrice"/>
                 </div>         
                          </br>
                 <div class = "panel panel-default">
@@ -318,31 +319,12 @@
             
             <div id="results">
                 
-                <form>
-                    <input type='hidden' name='add' value='2'/>
-                    <input type='submit' class="btn btn-success btn-xlarge" value = 'submit'/>
-                    
-                </form> 
+                
                 
                 <?php
                 
-                    print_r($_SESSION['shoppingCart']);
-                
-                    //loop through to show the results here
-                    foreach ($everything as $value)//this loop is a place holder
-                    {
-                        echo "<form method='get'>";
-                        echo "<button class = 'button' name='further_info_about' value=";
-                        echo $value['event_id'];
-                        echo ">";
-                        echo "Get more info";
-                        echo "</button>";
-                        echo "</br>";
-                        echo "</br>";
-                        echo "</br>";
-                        echo "</form>";
-                    }
-                
+                    displayResults();
+            
                 ?>
                 
             </div>
