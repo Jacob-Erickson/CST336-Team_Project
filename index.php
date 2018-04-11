@@ -171,18 +171,7 @@
                 <!--</form>-->
                 <?php
                 
-                
-                    foreach ($_SESSION['shoppingCart'] as $item)
-                    {
-                        foreach ($everything as $value)
-                        {
-                            if($item == $value['package_id'])
-                            {
-                                echo $value['package_name'];
-                                echo "<br />";
-                            }
-                        }
-                    }
+                    displayCart();
                 
                 ?>
                 
