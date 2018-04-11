@@ -20,6 +20,7 @@
             if(isset($_GET['minDays']) && $_GET['minDays'] != "")
             {
                 $all = false;
+                addend($sql);
                 $sql .= "event_end_date - event_start_date ";
                 if(isset($_GET['maxDays']) && $_GET['maxDays'] != "")
                 {
@@ -40,7 +41,7 @@
                 $sql .= "event_end_date - event_start_date <= " . $_GET['maxDays'];
             }
             
-            if(isset($_GET['minPrice']))
+            if(isset($_GET['minPrice']) && $_GET['minPrice'] != "")
             {
                 $all = false;
                 addend($sql);
@@ -57,7 +58,7 @@
                     $sql .= ">= " . $_GET['minPrice'];
                 }
             }
-            else if(isset($_GET['maxPrice']))
+            else if(isset($_GET['maxPrice']) && $_GET['maxPrice'] != "")
             {
                 $all = false;
                 addend($sql);
@@ -92,6 +93,8 @@
             {
                 $sql .= ";";
             }
+            
+            echo $sql;
             
             $execute = true;
             if(($_GET['minDays'] > $_GET['maxDays']) && ($_GET['minDays'] != "") && ($_GET['maxDays'] != ""))
