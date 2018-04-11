@@ -119,25 +119,36 @@
                 $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 echo "<table>";
                 
-                foreach ($records as $record)
+                
+                if(empty($records))
                 {
-                    echo "<tr>
-                    <td>Starts:<br />".$record["event_start_date"]."</td>
-                    <td>Ends:<br />".$record["event_end_date"]."</td>
-                    <td>$".$record["price_per_person"]."</td>
-                    <td>".$record["activity_name"]."<br />(" . $record['event_subname'].")</td>
-                    <td>".$record["activity_description"]."</td>
-                    <td>".$record["package_name"]."</td>
-                    <td>".$record["package_description"]."</td>
-                    <td>
-                    <form>
-                    <input type='hidden' name='add' value='".$record['event_id']."'/>
-                    <input type='submit' class='btn btn-success btn-xlarge' value = 'Add to cart'/>
-                    </form>
-                    </td>
-                    </tr> ";
+                    echo "<h2> Sorry there was no entries found for your criteria </h2>";
                 }
-                echo "</table>";
+                
+                else
+                {
+                    echo "<table>";
+                    foreach ($records as $record)
+                    {
+                        echo "<tr>
+                        <td>Starts:<br />".$record["event_start_date"]."</td>
+                        <td>Ends:<br />".$record["event_end_date"]."</td>
+                        <td>$".$record["price_per_person"]."</td>
+                        <td>".$record["activity_name"]."<br />(" . $record['event_subname'].")</td>
+                        <td>".$record["activity_description"]."</td>
+                        <td>".$record["package_name"]."</td>
+                        <td>".$record["package_description"]."</td>
+                        <td>
+                        <form>
+                        <input type='hidden' name='add' value='".$record['event_id']."'/>
+                        <input type='submit' class='btn btn-success btn-xlarge' value = 'Add to cart'/>
+                        </form>
+                        </td>
+                        </tr> ";
+                    }
+                    echo "</table>";
+                    
+                }
             }
        }
 ?>
