@@ -10,6 +10,8 @@ body
  font-size: 20px;
  background-image: url("back.jpg");
  background-repeat: repeat-x;
+ color:green;
+text-shadow: 1px 1px black;
 
 }
 
