@@ -145,6 +145,12 @@
                         <input type='submit' class='btn btn-success btn-xlarge' value = 'Add to cart'/>
                         </form>
                         </td>
+                        <td>
+                        <form>
+                        <input type='hidden' name='further_info_about' value='".$record['event_id']."'/>
+                        <input type='submit' class='btn btn-success btn-xlarge' value = 'Learn More'/>
+                        </form>
+                        </td>
                         </tr> ";
                     }
                     echo "</table>";
