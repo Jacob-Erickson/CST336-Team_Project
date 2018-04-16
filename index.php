@@ -15,6 +15,11 @@
     
     function getDatabaseConnection($dbName) 
     {
+        $host = "localhost";
+        $username = "web_user"; //make sure to change before pushing web_user, s3cr3t
+        $password = "s3cr3t";
+        $dbname = $dbName;
+        
         //checks whether the URL contains "herokuapp" (using Heroku)
         if(strpos($_SERVER['HTTP_HOST'], 'herokuapp') !== false) {
            $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
@@ -23,18 +28,11 @@
            $username = $url["user"];
            $password = $url["pass"];
         }
-        else
-        {
-            $host = "localhost";
-            $username = "web_user"; //make sure to change before pushing web_user, s3cr3t
-            $password = "s3cr3t";
-        }
         
-        $dbConn = new PDO("mysql:host=$host;dbname=$dbName", $username, $password);
+        $dbConn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
         $dbConn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
         return $dbConn;
-    
     }
     
     function getCodeResults($code, $database)
