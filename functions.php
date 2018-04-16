@@ -77,13 +77,14 @@
             
             if(isset($_GET['sort'])) {
                 
-                $all = false;
                 if($_GET['sort'] == 'Price') {
                     
+                $all = false;
                     $sql .= " ORDER BY price_per_person "; 
                     
                     
                 }else if($_GET['sort'] == 'Date') {
+                $all = false;
                     $sql .= " ORDER BY event_start_date ";
                     
                 }
