@@ -77,6 +77,7 @@
             
             if(isset($_GET['sort'])) {
                 
+                $all = false;
                 if($_GET['sort'] == 'Price') {
                     
                     $sql .= " ORDER BY price_per_person "; 
