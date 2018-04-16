@@ -163,8 +163,8 @@
                        <div class ="panel panel-primary">
                         <div class="panel-heading"><h4>Sort by:</h4></div>
                     </div>
-                        Price: <input type = "radio" name = "Price" value = "Price"> 
-                        Date: <input type = "radio" name = "Date" value = "Date">
+                        Price: <input type = "radio" name = "sort" value = "Price"> 
+                        Date: <input type = "radio" name = "sort" value = "Date">
                 </div>
                         
                         <div class ="panel panel-primary"><h4>Generate your results:</h4></div>
