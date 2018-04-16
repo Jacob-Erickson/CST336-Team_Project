@@ -75,29 +75,27 @@
                 $sql .= "category_name LIKE \"%" . str_replace("+", " ", $_GET['activity']) . "%\"";
             }
             
+            
+            if($all)
+            {
+                $sql .= "1";
+            }
+            
+            
             if(isset($_GET['sort'])) {
                 
                 if($_GET['sort'] == 'Price') {
                     
-                $all = false;
                     $sql .= " ORDER BY price_per_person "; 
                     
                     
                 }else if($_GET['sort'] == 'Date') {
-                $all = false;
                     $sql .= " ORDER BY event_start_date ";
                     
                 }
             }
             
-            if($all)
-            {
-                $sql .= "1;";
-            }
-            else
-            {
-                $sql .= ";";
-            }
+            $sql .= ";";
             
             $execute = true;
             if(($_GET['minDays'] > $_GET['maxDays']) && ($_GET['minDays'] != "") && ($_GET['maxDays'] != ""))
